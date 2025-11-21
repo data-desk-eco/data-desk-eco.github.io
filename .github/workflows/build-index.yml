@@ -42,7 +42,7 @@ jobs:
           cache: yarn
 
       - run: yarn --frozen-lockfile
-      - run: yarn docs:build
+      - run: yarn build
 
       - name: Copy projects.json and favicon to dist
         run: |
