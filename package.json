@@ -8,7 +8,7 @@
     "@observablehq/notebook-kit": "^1.4.1"
   },
   "scripts": {
-    "docs:preview": "notebooks preview --root docs --template template.html",
-    "docs:build": "notebooks build --root docs --template template.html -- docs/*.html"
+    "preview": "notebooks preview --root docs --template template.html",
+    "build": "notebooks build --root docs --template template.html -- docs/*.html"
   }
 }
