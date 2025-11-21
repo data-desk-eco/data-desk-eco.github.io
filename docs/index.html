@@ -1,0 +1,18 @@
+<!doctype html>
+<notebook theme="near-midnight">
+  <title>Data Desk research</title>
+  <script id="1" type="text/markdown">
+    # Research
+
+    This is a central index of all Data Desk research notebooks hosted on GitHub.
+  </script>
+  <script id="2" type="module">
+    const projects = await FileAttachment("projects.json").json();
+
+    display(html`<ul style="list-style: none; padding-left: 0;">
+      ${projects.map(p => html`<li style="margin: 0.5rem 0;">
+        <a href="${p.url}" target="_blank">${p.name}</a>${p.description ? html` — ${p.description}` : ''}
+      </li>`)}
+    </ul>`);
+  </script>
+</notebook>
