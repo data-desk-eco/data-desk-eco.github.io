@@ -44,8 +44,10 @@ jobs:
       - run: yarn --frozen-lockfile
       - run: yarn docs:build
 
-      - name: Copy projects.json to dist
-        run: cp docs/projects.json docs/.observable/dist/
+      - name: Copy projects.json and favicon to dist
+        run: |
+          cp docs/projects.json docs/.observable/dist/
+          cp favicon.ico docs/.observable/dist/
 
       - name: Push changes if any
         run: git push || true
