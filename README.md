@@ -7,11 +7,12 @@ This repository serves two purposes:
 ## Creating a new research notebook
 
 1. Use this repository as a template to create a new repo (the name becomes the URL)
-2. Go to "Settings" → "Pages" → "Build and deployment" and select "GitHub Actions"
-3. Clone your new repository and install dependencies: `yarn` (or `npm install`)
-4. Run preview: `yarn preview`
-5. Edit `docs/index.html` in your text editor or [Observable Desktop](https://observablehq.com/notebook-kit/desktop)
-6. Commit and push - GitHub Actions will automatically deploy to `https://research.datadesk.eco/[repo-name]`
+2. **⚠️ IMPORTANT: Delete the `CNAME` file immediately** - it's specific to the main research.datadesk.eco domain and will cause deployment conflicts if left in your new project
+3. Go to "Settings" → "Pages" → "Build and deployment" and select "GitHub Actions"
+4. Clone your new repository and install dependencies: `yarn` (or `npm install`)
+5. Run preview: `yarn preview`
+6. Edit `docs/index.html` in your text editor or [Observable Desktop](https://observablehq.com/notebook-kit/desktop)
+7. Commit and push - GitHub Actions will automatically deploy to `https://research.datadesk.eco/[repo-name]`
 
 ## How the index works
 

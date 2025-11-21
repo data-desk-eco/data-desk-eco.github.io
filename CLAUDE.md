@@ -638,8 +638,9 @@ research-notebook/
 
 1. Use `data-desk-eco.github.io` as GitHub template
 2. Name repo (becomes URL slug)
-3. Enable GitHub Pages (Settings → Pages → Source: GitHub Actions)
-4. Clone and install: `git clone [url] && cd [repo] && yarn`
+3. **⚠️ CRITICAL: Delete the `CNAME` file immediately** - it contains `research.datadesk.eco` which is specific to the main index site. If you leave this file in your new project, it will cause a domain conflict and break the main research index. Your new notebook will deploy to `https://research.datadesk.eco/[repo-name]/` without needing a CNAME file.
+4. Enable GitHub Pages (Settings → Pages → Source: GitHub Actions)
+5. Clone and install: `git clone [url] && cd [repo] && yarn`
 
 ### Minimal Notebook
 
