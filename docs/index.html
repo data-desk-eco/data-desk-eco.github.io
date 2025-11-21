@@ -12,8 +12,10 @@
     display(html`<ul style="list-style: none; padding-left: 0;">
       ${projects.map(p => {
         const date = new Date(p.updated_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        return html`<li style="margin: 0.5rem 0;">
-          <a href="${p.url}" target="_blank">${p.name}</a> (<a href="${p.repo_url}" target="_blank">repo</a>)${p.description ? html` — ${p.description}` : ''} <span style="color: #888; font-size: 0.9em;">· ${date}</span>
+        return html`<li style="margin: 1rem 0;">
+          <div><a href="${p.url}" target="_blank">${p.name}</a> (<a href="${p.repo_url}" target="_blank">repo</a>)</div>
+          ${p.description ? html`<div style="color: #888; font-size: 0.9em;">${p.description}</div>` : ''}
+          <div style="color: #888; font-size: 0.9em;">${date}</div>
         </li>`;
       })}
     </ul>`);
