@@ -26,7 +26,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh api "/orgs/data-desk-eco/repos" --paginate -q \
-            '[.[] | select(.has_pages and .name != "data-desk-eco.github.io" and (.topics | index("published"))) | {name: .name, description: .description, url: "https://research.datadesk.eco/\(.name)/"}] | sort_by(.name)' \
+            '[.[] | select(.has_pages and .name != "research.datadesk.eco" and (.topics | index("published"))) | {name: .name, description: .description, url: "https://research.datadesk.eco/\(.name)/"}] | sort_by(.name)' \
             > docs/projects.json
 
       - name: Commit projects.json
