@@ -11,7 +11,7 @@
 
     display(html`<ul style="list-style: none; padding-left: 0;">
       ${projects.map(p => html`<li style="margin: 0.5rem 0;">
-        <a href="${p.url}" target="_blank">${p.name}</a>${p.description ? html` — ${p.description}` : ''}
+        <a href="${p.url}" target="_blank">${p.name}</a> (<a href="${p.repo_url}" target="_blank">repo</a>)${p.description ? html` — ${p.description}` : ''}
       </li>`)}
     </ul>`);
   </script>
