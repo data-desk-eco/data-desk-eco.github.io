@@ -289,21 +289,56 @@ For interactive maps (example from `afungi-logistics`):
 
 ## Development Workflow
 
+### Build System
+
+All notebooks use a minimal Makefile with three phony targets:
+
+```makefile
+.PHONY: build preview data clean
+
+build:
+	yarn build
+
+preview:
+	yarn preview
+
+data:
+	# Repo-specific: generate/update data files
+
+clean:
+	rm -rf docs/.observable/dist
+```
+
+**Standard targets:**
+- `make build` - Build notebook to `docs/.observable/dist/`
+- `make preview` - Local dev server with hot reload
+- `make data` - Generate/update data (implementation varies by repo)
+- `make clean` - Remove build artifacts
+
+**Key insight:** SQL cells query DuckDB at build time, results embedded in HTML. Database files (`docs/data/*.duckdb`) needed for build, not deployment.
+
+**File targets pattern:**
+For incremental builds, use file targets under phony targets:
+
+```makefile
+.PHONY: data
+data: docs/data/data.duckdb
+
+docs/data/data.duckdb: raw/*.csv scripts/process.py
+	python scripts/process.py
+	duckdb $@ "CREATE TABLE flows AS SELECT * FROM 'raw/*.csv'"
+```
+
+Workflow calls `make data || true` (fails gracefully if target doesn't exist).
+
 ### Setup
 
 ```bash
-# Clone a notebook repository
 git clone https://github.com/data-desk-eco/[repo-name]
 cd [repo-name]
-
-# Install dependencies (use yarn preferred)
-yarn                      # or: npm install
-
-# Preview with hot reload
-yarn preview              # or: npm run preview
-
-# Build for production
-yarn build                # or: npm run build
+yarn
+make preview  # or: yarn preview
+make build    # or: yarn build
 ```
 
 ### Local Preview
@@ -342,30 +377,21 @@ notebooks build --root docs --template template.html -- docs/*.html
 
 ### Deployment
 
-All Data Desk notebooks use GitHub Actions for deployment:
+**Self-updating workflow:** `.github/workflows/deploy.yml` downloads itself from the main repo on every run. Fix bugs once, all repos get them.
 
-```yaml
-# .github/workflows/deploy.yml
-- name: Build notebook
-  run: yarn build
-
-- name: Upload to Pages
-  uses: actions/upload-pages-artifact@v3
-  with:
-    path: docs/.observable/dist
-```
-
-The workflow:
-1. Triggers on push to main
-2. Installs dependencies
-3. Runs the build
-4. Uploads `docs/.observable/dist` as artifact
-5. Deploys to GitHub Pages
+Workflow steps:
+1. Download shared `template.html` and `deploy.yml` from main repo
+2. Run `make data` (if exists)
+3. Commit updates to `docs/data/`, `template.html`, `deploy.yml`
+4. Run `make build`
+5. Deploy `docs/.observable/dist/` to GitHub Pages
 
 **GitHub Pages setup:**
 - Settings → Pages → Source: GitHub Actions
-- Custom domain: `research.datadesk.eco`
-- Each repo becomes a subdirectory (e.g., `/46026b7e69d1df26536300f654ce80e2/`)
+- Domain: `research.datadesk.eco`
+- Each repo becomes subdirectory (e.g., `/afungi-logistics/`)
+
+**Template repo:** `data-desk-eco.github.io` - copy to start new notebook. **Delete CNAME file immediately** to avoid domain conflict.
 
 ## Template Customization
 
@@ -662,16 +688,16 @@ research-notebook/
 </notebook>
 ```
 
-Save as `docs/index.html`, add `data.csv` to `docs/`, then `yarn preview`.
+Save as `docs/index.html`, add `data.csv` to `docs/`, then `make preview`.
 
-### Recommended Steps
+### Workflow steps
 
-1. **Plan the narrative:** What story does the data tell?
-2. **Prepare data:** ETL pipeline to clean/aggregate (if needed)
-3. **Structure cells:** Alternate markdown (narrative) and code (analysis)
-4. **Add visualizations:** Start simple (tables), add charts as needed
-5. **Test locally:** Preview and iterate quickly
-6. **Build and deploy:** Push to GitHub, Actions handles deployment
+1. Plan narrative - what story does the data tell?
+2. Prepare data - add `make data` target to Makefile if needed
+3. Structure cells - alternate markdown (narrative) and code (analysis)
+4. Add visualizations - start simple (tables), add charts as needed
+5. Test locally - `make preview` and iterate
+6. Deploy - push to GitHub, workflow handles rest
 
 ## Advanced Topics
 
@@ -800,23 +826,21 @@ Browse at https://research.datadesk.eco/
 
 ## Tips for AI Agents
 
-When working with Observable Notebooks:
-
-1. **Always preview before building:** Use `yarn preview` for rapid iteration
-2. **Data files in docs/:** FileAttachment paths are relative to `docs/index.html`
-3. **SQL cells are powerful:** Use them to query DuckDB databases directly
+1. **Use `make` commands:** `make preview` not `yarn preview`, `make build` not `yarn build`
+2. **SQL cells query at build time:** Results embedded in HTML, database not deployed
+3. **Data in docs/data/:** FileAttachment paths relative to `docs/index.html`
 4. **Display everything:** Don't return values, use `display()` explicitly
-5. **Cell types matter:** `type="module"` for JavaScript, `type="text/markdown"` for markdown, `type="application/sql"` for SQL
-6. **Observable stdlib is global:** `html`, `svg`, `FileAttachment`, `display` available everywhere
-7. **Async is required:** Always `await` FileAttachment and database queries
-8. **Built output is generated:** Don't edit `docs/.observable/dist/`, edit `docs/index.html`
-9. **Template wraps notebook:** Custom styles and branding come from `template.html`
-10. **ETL separate from notebook:** Heavy processing in `etl/`, analysis in notebook
-11. **Test queries in DuckDB CLI:** Faster than debugging in notebook
-12. **Use browser console:** Check for JavaScript errors and inspect variables
-13. **Relative paths only:** No absolute paths in FileAttachment calls
-14. **Observable Plot first:** Start with Plot before reaching for D3
-15. **Reactivity is automatic:** Variables update when dependencies change
+5. **Cell types:** `type="module"` for JS, `type="text/markdown"` for markdown, `type="application/sql"` for SQL
+6. **Observable stdlib global:** `html`, `svg`, `FileAttachment`, `display` available everywhere
+7. **Always await:** FileAttachment and database queries are async
+8. **Edit source not dist:** Don't edit `docs/.observable/dist/`, edit `docs/index.html`
+9. **Template auto-updates:** Don't edit `template.html` in child repos, it downloads from main
+10. **Data generation:** Add `make data` target for ETL, use file targets for incremental builds
+11. **Test queries:** Use DuckDB CLI to test queries before adding to notebook
+12. **Browser console:** Check for errors and inspect variables during preview
+13. **Relative paths only:** No absolute paths in FileAttachment
+14. **Plot first:** Use Observable Plot before reaching for D3
+15. **Workflow self-updates:** `.github/workflows/deploy.yml` downloads itself from main repo
 
 ## Project-Specific Notes
 

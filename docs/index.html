@@ -9,13 +9,22 @@
 
   <script id="hero" type="text/html">
     <figure class="hero">
-      <img src="assets/IMG_6010.jpeg" />
+      <img src="assets/hero.jpg" />
     </figure>
   </script>
 
-  <script id="main" type="module">
-    const projects = await FileAttachment("projects.json").json();
+  <script id="projects" output="projects" type="application/sql" database="data/data.duckdb" hidden>
+    SELECT
+      name,
+      description,
+      url,
+      repo_url,
+      pushed_at
+    FROM projects
+    ORDER BY pushed_at DESC
+  </script>
 
+  <script id="main" type="module">
     display(html`<ul style="list-style: none; padding-left: 0;">
       ${projects.map(p => {
         const date = new Date(p.pushed_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
