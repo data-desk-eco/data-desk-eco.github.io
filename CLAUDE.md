@@ -809,14 +809,7 @@ Link between notebooks:
 
 ### Examples
 
-All Data Desk notebooks are open source:
-
-- **INEOS ethane:** `/46026b7e69d1df26536300f654ce80e2/` - Complex ETL with dbt + DuckDB, SQL cells, stacked charts
-- **Mozambique LNG:** `/afungi-logistics/` - ADS-B flight tracking, 3D Mapbox visualization, GeoJSON
-- **Palma Bay:** `/palma-bay-dredging/` - Satellite imagery, marine AIS data, environmental analysis
-- **Media:** `/media/` - Simpler structure, good starting point
-
-Browse at https://research.datadesk.eco/
+All Data Desk notebooks are open source — browse at https://research.datadesk.eco/
 
 ### Getting Help
 
