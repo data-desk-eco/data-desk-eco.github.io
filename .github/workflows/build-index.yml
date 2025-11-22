@@ -42,6 +42,10 @@ jobs:
           cache: yarn
 
       - run: yarn --frozen-lockfile
+
+      - name: Download shared template
+        run: curl -o template.html https://raw.githubusercontent.com/data-desk-eco/data-desk-eco.github.io/main/template.html
+
       - run: yarn build
 
       - name: Copy projects.json and favicon to dist
