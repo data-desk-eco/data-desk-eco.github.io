@@ -38,9 +38,7 @@ Find your workflow file (usually `.github/workflows/deploy.yml` or similar) and 
 - run: yarn --frozen-lockfile
 
 - name: Download shared template
-  run: git show origin/main:template.html > template.html
-  env:
-    GIT_TERMINAL_PROMPT: 0
+  run: curl -o template.html https://raw.githubusercontent.com/data-desk-eco/data-desk-eco.github.io/main/template.html
 
 - run: yarn build
 ```
@@ -82,7 +80,7 @@ For local preview (`yarn preview`), you have two options:
 
 **Option 2: Download manually when needed**
 ```bash
-git show origin/main:template.html > template.html
+curl -o template.html https://raw.githubusercontent.com/data-desk-eco/data-desk-eco.github.io/main/template.html
 ```
 
 ## Updating to Latest Template
@@ -95,7 +93,7 @@ To pick up template changes from `data-desk-eco.github.io`:
 
 Alternatively, for local testing:
 ```bash
-git show origin/main:template.html > template.html
+curl -o template.html https://raw.githubusercontent.com/data-desk-eco/data-desk-eco.github.io/main/template.html
 yarn build
 ```
 
@@ -105,15 +103,15 @@ yarn build
 
 Download the template:
 ```bash
-git show origin/main:template.html > template.html
+curl -o template.html https://raw.githubusercontent.com/data-desk-eco/data-desk-eco.github.io/main/template.html
 ```
 
 ### Build fails in GitHub Actions
 
 Check that:
 - The download step comes **before** `yarn build`
-- The `git show` command succeeded (check action logs)
-- Your local repo has fetched the latest from origin (the workflow does `actions/checkout` which handles this)
+- The `curl` command succeeded (check action logs)
+- `data-desk-eco.github.io` is public (required for raw.githubusercontent.com access)
 
 ### Want to customize the template for one notebook
 

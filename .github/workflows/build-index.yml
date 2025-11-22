@@ -44,7 +44,7 @@ jobs:
       - run: yarn --frozen-lockfile
 
       - name: Download shared template
-        run: git show origin/main:template.html > template.html
+        run: curl -o template.html https://raw.githubusercontent.com/data-desk-eco/data-desk-eco.github.io/main/template.html
 
       - run: yarn build
 
