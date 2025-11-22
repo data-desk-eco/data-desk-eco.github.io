@@ -44,25 +44,26 @@ Unlike Jupyter notebooks that run sequentially, Observable notebooks use reactiv
 
 ### FileAttachment API
 
-Load data files from the `docs/` directory:
+Load data files relative to the notebook:
 
 ```javascript
 // CSV with automatic type inference
-const flows = await FileAttachment("data/flows.csv").csv({typed: true});
+const flows = await FileAttachment("../data/flows.csv").csv({typed: true});
 
 // JSON
-const projects = await FileAttachment("projects.json").json();
+const projects = await FileAttachment("../data/projects.json").json();
 
 // Parquet (efficient for large datasets)
-const tracks = await FileAttachment("data/tracks.parquet").parquet();
+const tracks = await FileAttachment("../data/tracks.parquet").parquet();
 
-// Images
+// Images (in docs/assets/)
 const img = await FileAttachment("assets/photo.jpg").url();
 ```
 
 **Important:**
-- All paths are relative to the notebook HTML file location
-- Data files must live in `docs/` or subdirectories
+- All paths are relative to the notebook HTML file (`docs/index.html`)
+- Data files live in root `data/` directory (use `../data/`)
+- Assets (images) live in `docs/assets/` (use `assets/`)
 - Use forward slashes even on Windows
 - Always `await` FileAttachment calls - they return promises
 
@@ -77,7 +78,7 @@ Observable Notebook Kit includes built-in DuckDB support for SQL queries. This i
 SQL cells query DuckDB databases directly:
 
 ```html
-<script id="flows" output="flows" type="application/sql" database="data/flows.duckdb" hidden>
+<script id="flows" output="flows" type="application/sql" database="../data/data.duckdb" hidden>
   select *
   from flows
   order by loading_date desc
@@ -86,7 +87,7 @@ SQL cells query DuckDB databases directly:
 
 **SQL cell attributes:**
 - `type="application/sql"` - marks this as a SQL query
-- `database="path/to/file.duckdb"` - path to DuckDB database file
+- `database="../data/data.duckdb"` - path to DuckDB database file (relative to notebook)
 - `output="flows"` - variable name to store results (accessible in other cells)
 - `hidden` - don't display output (optional)
 - `id` - unique identifier for the cell
@@ -140,7 +141,7 @@ Many research notebooks use a two-stage data pipeline:
 **Stage 1: Data preparation (outside the notebook)**
 - Located in `etl/` directory (dbt + DuckDB is common)
 - Processes raw data from APIs, spreadsheets, AIS feeds, etc.
-- Outputs clean DuckDB databases or CSV files to `docs/data/`
+- Outputs clean DuckDB databases or CSV files to `data/`
 - Example: `46026b7e69d1df26536300f654ce80e2` uses dbt models to process 71,000 AIS positions into 762 validated cargo flows
 
 **Stage 2: Analysis and visualization (in the notebook)**
@@ -315,16 +316,16 @@ clean:
 - `make data` - Generate/update data (implementation varies by repo)
 - `make clean` - Remove build artifacts
 
-**Key insight:** SQL cells query DuckDB at build time, results embedded in HTML. Database files (`docs/data/*.duckdb`) needed for build, not deployment.
+**Key insight:** SQL cells query DuckDB at build time, results embedded in HTML. Database files (`data/*.duckdb`) needed for build, not deployment.
 
 **File targets pattern:**
 For incremental builds, use file targets under phony targets:
 
 ```makefile
 .PHONY: data
-data: docs/data/data.duckdb
+data: data/data.duckdb
 
-docs/data/data.duckdb: raw/*.csv scripts/process.py
+data/data.duckdb: raw/*.csv scripts/process.py
 	python scripts/process.py
 	duckdb $@ "CREATE TABLE flows AS SELECT * FROM 'raw/*.csv'"
 ```
@@ -380,9 +381,9 @@ notebooks build --root docs --template template.html -- docs/*.html
 **Self-updating workflow:** `.github/workflows/deploy.yml` downloads itself from the main repo on every run. Fix bugs once, all repos get them.
 
 Workflow steps:
-1. Download shared `template.html` and `deploy.yml` from main repo
+1. Download shared `template.html`, `CLAUDE.md`, and `deploy.yml` from main repo
 2. Run `make data` (if exists)
-3. Commit updates to `docs/data/`, `template.html`, `deploy.yml`
+3. Commit updates to `data/`, `template.html`, `CLAUDE.md`, `deploy.yml`
 4. Run `make build`
 5. Deploy `docs/.observable/dist/` to GitHub Pages
 
@@ -531,7 +532,7 @@ const joined = aq.table(flows)
 
 **Data not loading**
 - Check file path is relative to `docs/index.html`
-- Verify file exists in `docs/` directory
+- Verify file exists in `data/` directory (use `../data/` from notebook)
 - Check browser network tab for 404 errors
 - Ensure filename case matches (case-sensitive on Linux/GitHub)
 
@@ -542,10 +543,10 @@ const joined = aq.table(flows)
 - Try wrapping in try/catch to see error messages
 
 **SQL cell returns empty results**
-- Verify database file exists at specified path
+- Verify database file exists at `data/data.duckdb`
 - Check table name spelling
 - Test query in DuckDB CLI first
-- Ensure database file is in `docs/data/` not root
+- Ensure database path in SQL cell is `../data/data.duckdb`
 
 **Template not applied**
 - Verify `--template template.html` in build command
@@ -554,7 +555,7 @@ const joined = aq.table(flows)
 
 **Preview works but build fails**
 - Check for absolute paths in FileAttachment (should be relative)
-- Look for references to `/data/` instead of `data/`
+- Ensure data files use `../data/` from notebook
 - Test build locally before pushing
 
 ### Debugging SQL
@@ -562,10 +563,10 @@ const joined = aq.table(flows)
 Use DuckDB CLI to test queries:
 
 ```bash
-duckdb docs/data/flows.duckdb
+duckdb data/data.duckdb
 
-D SELECT count(*) FROM flows;
-D .schema flows
+D SELECT count(*) FROM mentions;
+D .schema mentions
 D .tables
 ```
 
@@ -591,9 +592,9 @@ Open browser dev tools (F12) to see:
 **Example:**
 ```javascript
 // Instead of loading 1M rows:
-// const all = await FileAttachment("huge.csv").csv();
+// const all = await FileAttachment("../data/huge.csv").csv();
 
-// Load aggregated subset:
+// Load aggregated subset via SQL cell:
 const summary = await db.query(`
   SELECT year, month, sum(value) as total
   FROM huge_table
@@ -623,12 +624,12 @@ research-notebook/
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml           # GitHub Actions deployment
+├── data/                        # Data files (DuckDB, CSV, JSON)
+│   ├── data.duckdb              # Main database
+│   ├── flows.csv                # Optional: source data
+│   └── vessels.json             # Optional: reference data
 ├── docs/
 │   ├── index.html               # Notebook source (EDIT THIS)
-│   ├── data/                    # Data files
-│   │   ├── flows.csv
-│   │   ├── flows.duckdb
-│   │   └── vessels.json
 │   ├── assets/                  # Images, screenshots
 │   │   └── photo.jpg
 │   └── .observable/
@@ -637,26 +638,31 @@ research-notebook/
 │   ├── models/                  # dbt models (SQL)
 │   ├── seeds/                   # Reference data (CSV)
 │   └── dbt_project.yml
-├── template.html                # Custom HTML wrapper
+├── scripts/                     # Optional: data collection scripts
+│   └── fetch.sh
+├── template.html                # Custom HTML wrapper (auto-updated)
 ├── package.json                 # Dependencies and scripts
+├── Makefile                     # Build targets
 ├── .gitignore
 ├── README.md                    # GitHub repo description
-└── CLAUDE.md                    # This file
+└── CLAUDE.md                    # This file (auto-updated)
 ```
 
 **What to commit:**
-- `docs/index.html` (source)
-- `docs/data/*` (processed data)
+- `docs/index.html` (notebook source)
+- `data/*` (processed data files and databases)
 - `docs/assets/*` (images)
 - `etl/*` (data pipeline)
-- `template.html`
-- `package.json`
+- `scripts/*` (data collection)
+- `package.json`, `Makefile`
 
 **What NOT to commit:**
 - `docs/.observable/dist/` (built output)
 - `node_modules/`
 - `.env` (credentials)
-- Raw data files (keep in ETL, export processed to docs/data/)
+- `template.html` (auto-updated from main repo)
+- `CLAUDE.md` (auto-updated from main repo)
+- Raw/intermediate data files (keep in ETL, export processed to `data/`)
 
 ## Creating a New Notebook
 
@@ -688,7 +694,7 @@ research-notebook/
 </notebook>
 ```
 
-Save as `docs/index.html`, add `data.csv` to `docs/`, then `make preview`.
+Save as `docs/index.html`, add `data.csv` to `data/`, then `make preview`.
 
 ### Workflow steps
 
@@ -795,6 +801,8 @@ Link between notebooks:
 </script>
 ```
 
+**Note:** All notebooks share the same `data/` directory, so data can be reused across notebooks.
+
 ## Resources
 
 ### Documentation
@@ -821,17 +829,17 @@ All Data Desk notebooks are open source — browse at https://research.datadesk
 
 1. **Use `make` commands:** `make preview` not `yarn preview`, `make build` not `yarn build`
 2. **SQL cells query at build time:** Results embedded in HTML, database not deployed
-3. **Data in docs/data/:** FileAttachment paths relative to `docs/index.html`
+3. **Data in root data/:** Files in `data/` directory, reference as `../data/` from notebook
 4. **Display everything:** Don't return values, use `display()` explicitly
 5. **Cell types:** `type="module"` for JS, `type="text/markdown"` for markdown, `type="application/sql"` for SQL
 6. **Observable stdlib global:** `html`, `svg`, `FileAttachment`, `display` available everywhere
 7. **Always await:** FileAttachment and database queries are async
 8. **Edit source not dist:** Don't edit `docs/.observable/dist/`, edit `docs/index.html`
-9. **Template auto-updates:** Don't edit `template.html` in child repos, it downloads from main
+9. **Shared files auto-update:** `template.html` and `CLAUDE.md` download from main repo
 10. **Data generation:** Add `make data` target for ETL, use file targets for incremental builds
-11. **Test queries:** Use DuckDB CLI to test queries before adding to notebook
+11. **Test queries:** Use `duckdb data/data.duckdb` to test queries before adding to notebook
 12. **Browser console:** Check for errors and inspect variables during preview
-13. **Relative paths only:** No absolute paths in FileAttachment
+13. **Relative paths:** Use `../data/` for data files, `assets/` for images
 14. **Plot first:** Use Observable Plot before reaching for D3
 15. **Workflow self-updates:** `.github/workflows/deploy.yml` downloads itself from main repo
 
