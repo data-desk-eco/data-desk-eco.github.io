@@ -19,15 +19,15 @@
       description,
       url,
       repo_url,
-      pushed_at
+      created_at
     FROM projects
-    ORDER BY pushed_at DESC
+    ORDER BY created_at DESC
   </script>
 
   <script id="main" type="module">
     display(html`<ul style="list-style: none; padding-left: 0;">
       ${projects.map(p => {
-        const date = new Date(p.pushed_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        const date = new Date(p.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
         return html`<li style="margin: 1rem 0;">
           <div><a href="${p.url}" target="_blank">${p.name}</a> (<a href="${p.repo_url}" target="_blank">repo</a>)</div>
           ${p.description ? html`<div style="color: #888; font-size: 0.9em;">${p.description}</div>` : ''}
