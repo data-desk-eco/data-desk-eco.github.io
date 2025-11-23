@@ -24,11 +24,6 @@ This repository serves two purposes:
 ## How the index works
 
 - A GitHub Action runs daily (or on push) to fetch all public repos with Pages enabled
-- The `projects.json` file is generated with repo names, descriptions, and last-updated dates
-- Projects are displayed sorted by most recently updated
+- Data is written to `data/data.duckdb` as a `projects` table with repo names, descriptions, and last-updated dates
+- The notebook queries this DuckDB database and displays projects sorted by most recently updated
 - Built using [Observable Notebook Kit](https://observablehq.com/notebook-kit/kit) and deployed via GitHub Actions
-
-<figure>
-  <img width="1264" height="912" alt="Editing in Observable Desktop" src="https://github.com/user-attachments/assets/a4ba7acc-7251-44f5-a0b7-b4892b32448d" />
-  <caption>Editing this notebook in Observable Desktop</caption>
-</figure>
