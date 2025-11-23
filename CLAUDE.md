@@ -304,26 +304,24 @@ Two-stage pipeline common in research notebooks:
 
 ## Critical Gotchas
 
-1. **CNAME conflict:** Delete `CNAME` file when creating new repo from template (specific to main index)
-2. **Data paths:** Use `../data/` from notebook, not `data/`
-3. **SQL database path:** `database="../data/data.duckdb"` in SQL cells
-4. **Display everything:** Use `display()` explicitly, don't rely on return values
-5. **Cell IDs:** Must be unique across notebook
-6. **Await FileAttachment:** All FileAttachment calls return promises
-7. **Edit source:** Edit `docs/index.html`, not `docs/.observable/dist/`
-8. **Auto-updating files:** `template.html` and `CLAUDE.md` download from main repo on deploy
-9. **Case-sensitive paths:** GitHub Pages is case-sensitive
-10. **SQL cells at build time:** Database must exist when running `make build`
+1. **Data paths:** Use `../data/` from notebook, not `data/`
+2. **SQL database path:** `database="../data/data.duckdb"` in SQL cells
+3. **Display everything:** Use `display()` explicitly, don't rely on return values
+4. **Cell IDs:** Must be unique across notebook
+5. **Await FileAttachment:** All FileAttachment calls return promises
+6. **Edit source:** Edit `docs/index.html`, not `docs/.observable/dist/`
+7. **Auto-updating files:** `template.html` and `CLAUDE.md` download from main repo on deploy
+8. **Case-sensitive paths:** GitHub Pages is case-sensitive
+9. **SQL cells at build time:** Database must exist when running `make build`
 
 ## Creating New Notebook
 
 1. Use `data-desk-eco.github.io` as GitHub template
-2. **⚠️ Delete `CNAME` file immediately**
-3. Enable Pages (Settings → Pages → Source: GitHub Actions)
-4. Clone: `git clone [url] && cd [repo] && yarn`
-5. Preview: `make preview`
-6. Edit `docs/index.html`
-7. Push - deploys to `https://research.datadesk.eco/[repo-name]/`
+2. Enable Pages (Settings → Pages → Source: GitHub Actions)
+3. Clone: `git clone [url] && cd [repo] && yarn`
+4. Preview: `make preview`
+5. Edit `docs/index.html`
+6. Push - deploys to `https://research.datadesk.eco/[repo-name]/`
 
 ## This Repo (data-desk-eco.github.io)
 
