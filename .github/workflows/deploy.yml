@@ -2,7 +2,7 @@ name: Deploy notebook
 
 on:
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '0 6 1 * *'  # Monthly on the 1st
   workflow_dispatch:
   push:
     branches: [main]
@@ -11,6 +11,7 @@ permissions:
   contents: write
   pages: write
   id-token: write
+  workflows: write
 
 jobs:
   deploy:
