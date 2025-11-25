@@ -18,7 +18,8 @@ This repository serves two purposes:
 
 - `make preview` - Start local dev server with hot reload
 - `make build` - Build notebook to `docs/.observable/dist/`
-- `make data` - Fetch/update data files (repo-specific implementation)
+- `make etl` - Run expensive local computation (if needed)
+- `make data` - Lightweight data refresh (runs in GitHub Actions)
 - `make clean` - Remove build artifacts
 
 ## How the index works
