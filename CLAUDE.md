@@ -375,18 +375,6 @@ ports.forEach(p => {
 5. Edit `docs/index.html`
 6. Push - deploys to `https://research.datadesk.eco/[repo-name]/`
 
-## This Repo (data-desk-eco.github.io)
-
-Special case: serves as both template and research index at `https://research.datadesk.eco/`
-
-`make data` implementation:
-- Fetches all public repos with Pages enabled from `data-desk-eco` org
-- Filters repos with descriptions
-- Writes to `data/data.duckdb` as `projects` table
-- Notebook queries table and renders as list
-
-Updates automatically via GitHub Actions (monthly + on push).
-
 ## Resources
 
 - Observable Notebook Kit: https://observablehq.com/notebook-kit/
