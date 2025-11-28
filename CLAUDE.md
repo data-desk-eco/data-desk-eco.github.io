@@ -84,7 +84,7 @@ const img = await FileAttachment("assets/photo.jpg").url();
 
 ### DuckDB / SQL Cells
 
-SQL cells query DuckDB at build time, results embedded in HTML. Use these for *all* data manipulation, except where JS is overwhelmingly more elegant.
+SQL cells query DuckDB at build time, results embedded in HTML.
 
 ```html
 <script id="query" output="flows" type="application/sql" database="../data/data.duckdb" hidden>
