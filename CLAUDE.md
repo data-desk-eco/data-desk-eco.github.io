@@ -365,6 +365,7 @@ ports.forEach(p => {
 7. **Auto-updating files:** `template.html` and `CLAUDE.md` download from `.github` repo on deploy
 8. **Case-sensitive paths:** GitHub Pages is case-sensitive
 9. **SQL cells at build time:** Database must exist when running `make build`
+10. **Prefer SQL over JS:** Use SQL cells for data manipulation; reserve JavaScript for formatting, visualization, and cases where it's clearly more elegant
 
 ## Creating New Notebook
 
