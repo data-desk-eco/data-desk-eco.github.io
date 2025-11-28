@@ -17,7 +17,7 @@ repo/
 ```
 
 **Commit:** `docs/index.html`, `data/*`, `docs/assets/*`, `Makefile`
-**Don't commit:** `docs/.observable/dist/`, `node_modules/`, `template.html`, `CLAUDE.md`
+**Don't commit:** `docs/.observable/dist/`, `node_modules/`, `template.html`
 
 ## Observable Notebook Basics
 
