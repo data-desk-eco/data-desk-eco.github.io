@@ -14,5 +14,8 @@ data:
 		| duckdb data/data.duckdb "CREATE OR REPLACE TABLE projects AS SELECT * FROM read_json('/dev/stdin')"
 	@echo "Data updated"
 
+robots:
+  	printf 'User-agent: *\nDisallow: /\n' > docs/robots.txt
+
 clean:
 	rm -rf docs/.observable/dist
