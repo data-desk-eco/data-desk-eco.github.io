@@ -382,3 +382,88 @@ ports.forEach(p => {
 - Observable Inputs: https://observablehq.com/notebook-kit/inputs
 - DuckDB SQL: https://duckdb.org/docs/sql/introduction
 - All Data Desk notebooks: https://research.datadesk.eco/
+
+## Energy & Trade Flow Reference Sources
+
+Authoritative public sources for validating analysis. Useful for context and sense-checking.
+
+### Primary Reference Sources
+
+| Source | Link | Description | Geography | Commodities | Frequency | Access |
+|--------|------|-------------|-----------|-------------|-----------|--------|
+| **IEA** | [iea.org/data-and-statistics](https://www.iea.org/data-and-statistics) | International Energy Agency - global energy balances, oil market reports | Global | Oil, gas, coal, renewables | Monthly/Annual | Free (limited) + Paid; Excel/PDF; No API |
+| **EIA** | [eia.gov](https://www.eia.gov) | US Energy Information Administration - production, imports/exports, stocks | US + Global | Crude, products, LNG, coal | Weekly/Monthly | **Free**; API (JSON), Excel, CSV, bulk ZIP; Registration for API key |
+| **UN Comtrade** | [comtradeplus.un.org](https://comtradeplus.un.org) | Global trade statistics by HS code | 200+ countries | All commodities (HS codes) | Monthly (2-3mo lag) | **Free**; API, CSV, JSON; No registration: 500 records/call; Free registration: 100k records/call |
+| **Eurostat** | [ec.europa.eu/eurostat](https://ec.europa.eu/eurostat/web/energy/overview) | EU statistical office - energy balances, trade | EU-27 | Oil, gas, coal, electricity | Monthly | **Free**; API (SDMX), CSV, bulk download; No registration |
+| **JODI** | [jodidata.org](https://www.jodidata.org) | Joint Organisations Data Initiative - oil/gas transparency | 100+ countries | Crude, products, natural gas | Monthly | **Free**; Online viewer, downloadable; No API |
+
+### US Federal & State Sources
+
+| Source | Link | Description | Geography | Commodities | Frequency | Access |
+|--------|------|-------------|-----------|-------------|-----------|--------|
+| **US DOE** | [energy.gov/data](https://www.energy.gov/data) | Dept of Energy - strategic reserves, policy data | US | SPR, all energy | Varies | **Free**; PDF, Excel |
+| **US Census (Trade)** | [census.gov/foreign-trade](https://www.census.gov/foreign-trade/data) | Official US import/export statistics | US | All (HS/NAICS codes) | Monthly | **Free**; API, CSV, Excel; No registration |
+| **USITC DataWeb** | [dataweb.usitc.gov](https://dataweb.usitc.gov) | US International Trade Commission - detailed HTS data | US | All (HTS codes) | Monthly | **Free**; CSV, Excel download; No registration |
+| **Texas RRC** | [rrc.texas.gov](https://www.rrc.texas.gov/oil-and-gas/) | Texas Railroad Commission - production, permits | Texas | Crude, gas, NGL | Monthly | **Free**; Online queries, downloadable datasets |
+| **Louisiana DNR** | [dnr.louisiana.gov](http://www.dnr.louisiana.gov/index.cfm/page/134) | LA Dept Natural Resources - production data | Louisiana | Crude, gas | Monthly | **Free**; PDF, online queries |
+| **Louisiana SONRIS** | [sonris.com](https://sonris.com) | LA Strategic Online Natural Resources Info System | Louisiana | Crude, gas, wells | Daily/Monthly | **Free**; Online database, shapefiles |
+| **California DOGGR** | [conservation.ca.gov/calgem](https://www.conservation.ca.gov/calgem) | CA Geologic Energy Management | California | Crude, gas | Monthly | **Free**; Online queries, downloads |
+| **North Dakota DMR** | [dmr.nd.gov/oilgas](https://www.dmr.nd.gov/oilgas/) | ND Dept Mineral Resources (Bakken) | North Dakota | Crude, gas | Monthly | **Free**; Online queries, downloads |
+| **Alaska AOGCC** | [aogcc.alaska.gov](https://www.aogcc.alaska.gov) | Alaska Oil & Gas Conservation Commission | Alaska | Crude, gas | Monthly | **Free**; Online database |
+| **Wyoming OGCC** | [wogcc.wyo.gov](https://wogcc.wyo.gov) | Wyoming Oil & Gas Conservation Commission | Wyoming | Crude, gas | Monthly | **Free**; Online database (WYDE explorer) |
+
+### International Government Sources
+
+| Source | Link | Description | Geography | Commodities | Frequency | Access |
+|--------|------|-------------|-----------|-------------|-----------|--------|
+| **UK DESNZ** | [gov.uk/government/statistics](https://www.gov.uk/government/statistics/oil-and-oil-products-section-3-energy-trends) | UK Dept Energy Security - DUKES, Energy Trends | UK | Oil, gas, coal, power | Monthly/Annual | **Free**; Excel, ODS, PDF; No API |
+| **UK HMRC Trade** | [uktradeinfo.com](https://www.uktradeinfo.com) | UK customs trade data | UK | All (CN codes) | Monthly | **Free**; API available, CSV; Open Govt Licence |
+| **Statistics Canada** | [statcan.gc.ca](https://www.statcan.gc.ca/en/subjects-start/energy) | Canadian energy statistics | Canada | Crude, gas, products | Monthly | **Free**; API (JSON, CSV, XML); No registration |
+| **CER (Canada)** | [cer-rec.gc.ca](https://www.cer-rec.gc.ca/en/data-analysis/energy-commodities/) | Canada Energy Regulator - pipelines, exports | Canada | Crude, gas, NGL | Monthly | **Free**; Online tools, downloadable |
+| **ANP Brazil** | [gov.br/anp](https://www.gov.br/anp/pt-br/centrais-de-conteudo/dados-estatisticos) | Brazil National Petroleum Agency | Brazil | Crude, products, biofuels | Monthly | **Free**; Excel, PDF (Portuguese) |
+| **Pemex (Mexico)** | [pemex.com/ri](https://www.pemex.com/ri/Publicaciones/Paginas/IndicadoresPetroleros.aspx) | Mexican state oil company statistics | Mexico | Crude, products | Monthly | **Free**; PDF, Excel (Spanish) |
+
+### Producer/Exporter Sources
+
+| Source | Link | Description | Geography | Commodities | Frequency | Access |
+|--------|------|-------------|-----------|-------------|-----------|--------|
+| **OPEC** | [opec.org/opec_web/en/data_graphs](https://www.opec.org/opec_web/en/data_graphs/40.htm) | OPEC Monthly Oil Market Report | OPEC members | Crude | Monthly | **Free**; PDF reports, online charts |
+| **OPEC ASB** | [asb.opec.org](https://asb.opec.org) | Annual Statistical Bulletin - detailed data | OPEC + global | Crude, products, trade | Annual | **Free**; Interactive online, PDF |
+| **Saudi Aramco** | [aramco.com/investors](https://www.aramco.com/en/investors) | Saudi production/export data | Saudi Arabia | Crude, products | Quarterly | **Free**; PDF reports |
+| **Petrobras** | [petrobras.com.br/ri](https://www.petrobras.com.br/ri) | Brazilian NOC production/exports | Brazil | Crude, products | Monthly | **Free**; PDF, Excel |
+
+### Shipping & Customs
+
+| Source | Link | Description | Geography | Commodities | Frequency | Access |
+|--------|------|-------------|-----------|-------------|-----------|--------|
+| **Eurostat Comext** | [ec.europa.eu/eurostat/comext](https://ec.europa.eu/eurostat/web/international-trade-in-goods/overview) | EU external trade database | EU-27 | All (CN codes) | Monthly | **Free**; API, bulk download, CSV |
+| **China Customs (GACC)** | [english.customs.gov.cn](http://english.customs.gov.cn) | China General Administration of Customs | China | All | Monthly | **Free**; PDF, limited English; Aggregated data |
+| **India DGCIS** | [dgciskol.gov.in](https://www.dgciskol.gov.in) | India trade statistics | India | All | Monthly | Partial free; Some data requires purchase |
+
+### LNG-Specific Sources
+
+| Source | Link | Description | Geography | Commodities | Frequency | Access |
+|--------|------|-------------|-----------|-------------|-----------|--------|
+| **GIIGNL** | [giignl.org](https://giignl.org) | Intl Group of LNG Importers - annual report | Global | LNG | Annual | **Free**; PDF annual report |
+| **FERC (US)** | [ferc.gov/industries-data/natural-gas/lng](https://www.ferc.gov/industries-data/natural-gas/lng) | US LNG export terminal data | US | LNG | Monthly | **Free**; PDF, Excel |
+| **ICE ENDEX** | [theice.com/market-data](https://www.theice.com/market-data) | European gas hub prices/flows | Europe | Natural gas, LNG | Daily | Paid subscription for full data |
+
+### Academic & Research Institutions
+
+| Source | Link | Description | Geography | Commodities | Frequency | Access |
+|--------|------|-------------|-----------|-------------|-----------|--------|
+| **Columbia CGEP** | [energypolicy.columbia.edu](https://www.energypolicy.columbia.edu) | Center on Global Energy Policy - research, commentary, data | Global | Oil, gas, energy transition | Ongoing | **Free**; PDF reports, some datasets |
+| **Oxford OIES** | [oxfordenergy.org](https://www.oxfordenergy.org) | Oxford Institute for Energy Studies - deep research papers | Global | Oil, gas, LNG, power | Ongoing | **Free**; PDF papers |
+
+### Industry Analysis & Consulting
+
+| Source | Link | Description | Geography | Commodities | Frequency | Access |
+|--------|------|-------------|-----------|-------------|-----------|--------|
+| **Wood Mackenzie** | [woodmac.com](https://www.woodmac.com) | In-depth upstream, downstream, energy transition analysis | Global | Oil, gas, LNG, power, metals | Ongoing | **Paid** (most content); Limited free insights |
+
+### News & Market Commentary
+
+| Source | Link | Description | Geography | Commodities | Frequency | Access |
+|--------|------|-------------|-----------|-------------|-----------|--------|
+| **Reuters Commodities** | [reuters.com/markets/commodities](https://www.reuters.com/markets/commodities/) | Breaking news, market moves, trade flow reporting | Global | Oil, gas, metals, agriculture | Real-time | **Free**; Online articles |
+| **S&P Global Commodity Insights** | [spglobal.com/commodityinsights](https://www.spglobal.com/commodityinsights/en) | Platts pricing, market analysis, news | Global | Oil, gas, LNG, petrochemicals | Daily | Free (news) + Paid (pricing/data) |
