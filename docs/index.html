@@ -2,54 +2,30 @@
 <notebook theme="midnight">
   <title>Data Desk research</title>
 
-  <script id="hero" type="module">
-    const heroUrl = await FileAttachment("assets/hero.jpg").url();
-    display(html`
-      <figure style="margin: 0 0 2rem 0;">
-        <img
-          src="${heroUrl}"
-          alt="Research hero image"
-          style="
-            width: 100%;
-            height: 300px;
-            object-fit: cover;
-            border-radius: 8px;
-            filter: grayscale(100%);
-          "
-        />
-        <figcaption style="
-          font-size: 0.75rem;
-          color: rgba(255,255,255,0.5);
-          margin-top: 0.5rem;
-          text-align: right;
-        ">Caption describing the hero image</figcaption>
-      </figure>
-    `);
+  <script id="styles" type="text/html">
+    <style>
+      ul.projects li { margin: 1rem 0; }
+      ul.projects .meta { color: var(--theme-foreground-muted); font-size: 0.9em; }
+    </style>
+  </script>
+
+  <script id="last_updated" type="module">
+    const lastUpdated = await FileAttachment("../data/last_updated.json").json();
+    const commitDate = new Date(lastUpdated.date);
+    const dateText = commitDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
   </script>
 
   <script id="header" type="text/markdown">
     # Research
+    *${dateText}*
 
     This is an index of Data Desk research notebooks, which are hosted on [GitHub](https://github.com/data-desk-eco). For the work they support, check our [Substack](https://blog.datadesk.eco/) and [media mentions](https://research.datadesk.eco/media/).
   </script>
 
-  <script id="updated_badge" type="module">
-    const lastUpdated = await FileAttachment("../data/last_updated.json").json();
-    const commitDate = new Date(lastUpdated.date);
-    const dateText = `Updated ${commitDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}`;
-
-    display(html`
-      <span style="
-        display: inline-block;
-        background: rgba(255,255,255,0.1);
-        border: 1px solid rgba(255,255,255,0.2);
-        border-radius: 4px;
-        padding: 0.35rem 0.75rem;
-        font-size: 0.75rem;
-        color: rgba(255,255,255,0.7);
-        margin-bottom: 1rem;
-      ">${dateText}</span>
-    `);
+  <script id="hero" type="text/html">
+    <figure class="hero">
+      <img src="assets/hero.jpg" />
+    </figure>
   </script>
 
   <script id="projects" output="projects" type="application/sql" database="../data/data.duckdb" hidden>
@@ -64,13 +40,13 @@
   </script>
 
   <script id="main" type="module">
-    display(html`<ul style="list-style: none; padding-left: 0;">
+    display(html`<ul class="projects">
       ${projects.map(p => {
-        const date = new Date(p.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        return html`<li style="margin: 1rem 0;">
+        const date = new Date(p.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+        return html`<li>
           <div><a href="${p.url}">${p.name}</a> (<a href="${p.repo_url}">repo</a>)</div>
-          ${p.description ? html`<div style="color: #888; font-size: 0.9em;">${p.description}</div>` : ''}
-          <div style="color: #888; font-size: 0.9em;">${date}</div>
+          ${p.description ? html`<div class="meta">${p.description}</div>` : ''}
+          <div class="meta">${date}</div>
         </li>`;
       })}
     </ul>`);
