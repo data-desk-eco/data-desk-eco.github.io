@@ -2,19 +2,6 @@
 <notebook theme="midnight">
   <title>Data Desk research</title>
 
-  <script id="styles" type="text/html">
-    <style>
-      ul.projects li { margin: 1rem 0; }
-      ul.projects .meta { color: var(--theme-foreground-muted); font-size: 0.9em; }
-    </style>
-  </script>
-
-  <script id="last_updated" type="module">
-    const lastUpdated = await FileAttachment("../data/last_updated.json").json();
-    const commitDate = new Date(lastUpdated.date);
-    const dateText = commitDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-  </script>
-
   <script id="header" type="text/markdown">
     # Research
     *${dateText}*
@@ -51,4 +38,18 @@
       })}
     </ul>`);
   </script>
+
+  <script id="last_updated" type="module" hidden>
+    const lastUpdated = await FileAttachment("../data/last_updated.json").json();
+    const commitDate = new Date(lastUpdated.date);
+    const dateText = commitDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  </script>
+
+  <script id="styles" type="text/html" hidden>
+    <style>
+      ul.projects li { margin: 1rem 0; }
+      ul.projects .meta { color: var(--theme-foreground-muted); font-size: 0.9em; }
+    </style>
+  </script>
+
 </notebook>
