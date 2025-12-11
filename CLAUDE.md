@@ -28,11 +28,11 @@ Notebooks use `<notebook>` element, not Jupyter format. Reactive execution: cell
 ```html
 <!doctype html>
 <notebook theme="midnight">
-  <title>Research title</title>
+  <title>Research Title</title>
 
   <!-- Markdown -->
   <script id="header" type="text/markdown">
-    # Research title
+    # Heading
   </script>
 
   <!-- JavaScript -->
@@ -58,7 +58,6 @@ Notebooks use `<notebook>` element, not Jupyter format. Reactive execution: cell
 - Cells are `type="module"` by default (ES6 syntax)
 - Use `display()` to render output (don't rely on return values)
 - Variables defined in one cell available to all others
-- Use **sentence case** for all titles, headings, and chart titles (e.g., "Outages by country" not "Outages By Country")
 
 ## Loading Data
 
