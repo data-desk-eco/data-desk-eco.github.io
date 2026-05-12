@@ -3,3 +3,6 @@ node_modules
 .DS_Store
 **/.DS_Store
 data/last_updated.json
+template.html
+.claude/*
+!.claude/settings.json
