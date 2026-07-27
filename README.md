@@ -1,30 +1,26 @@
-# Data Desk Research Index
+# Data Desk research index
 
-This repository serves two purposes:
-1. The central index for all Data Desk research notebooks at [`https://research.datadesk.eco/`](https://research.datadesk.eco/)
-2. A template for creating new research notebooks
+The index of every Data Desk research notebook, published at
+[research.datadesk.eco](https://research.datadesk.eco/).
 
-## Creating a new research notebook
-
-1. Use this repository as a template to create a new repo (the name becomes the URL)
-2. Go to "Settings" → "Pages" → "Build and deployment" and select "GitHub Actions"
-3. Clone your new repository and install dependencies: `yarn` (or `npm install`)
-4. Run preview: `make preview` (or `yarn preview`)
-5. Edit `docs/index.html` in your text editor or [Observable Desktop](https://observablehq.com/notebook-kit/desktop)
-6. Build: `make build` (or `yarn build`)
-7. Commit and push - GitHub Actions will automatically deploy to `https://research.datadesk.eco/[repo-name]`
-
-## Makefile targets
-
-- `make preview` - Start local dev server with hot reload
-- `make build` - Build notebook to `docs/.observable/dist/`
-- `make etl` - Run expensive local computation (if needed)
-- `make data` - Lightweight data refresh (runs in GitHub Actions)
-- `make clean` - Remove build artifacts
+**To make a new notebook, use
+[`notebook-template`](https://github.com/data-desk-eco/notebook-template), not
+this repo** — or run `data-desk new <name>`. This repo used to double as the
+template; it does not any more.
 
 ## How the index works
 
-- A GitHub Action runs daily (or on push) to fetch all public repos with Pages enabled
-- Data is written to `data/data.duckdb` as a `projects` table with repo names, descriptions, and last-updated dates
-- The notebook queries this DuckDB database and displays projects sorted by most recently updated
-- Built using [Observable Notebook Kit](https://observablehq.com/notebook-kit/kit) and deployed via GitHub Actions
+A GitHub Action runs monthly, or on push, and fetches every public
+`data-desk-eco` repo that has Pages enabled and a non-empty description. `make
+data` writes them to `data/data.duckdb` as a `projects` table; the notebook
+queries that and lists them by most recently updated.
+
+```bash
+data-desk link    # shared build template and house rules
+yarn
+make preview      # http://localhost:3000
+make data         # refresh the project list
+make build
+```
+
+Built with Observable Notebook Kit and deployed via GitHub Actions.
