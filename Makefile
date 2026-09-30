@@ -1,10 +1,15 @@
-.PHONY: build preview data clean
+.PHONY: build preview data clean deps
+
+# a builder without its duckdb driver writes every sql cell empty and exits 0.
+# ci has no data-desk and installs with yarn before it builds.
+deps: template.html
+	@! command -v data-desk >/dev/null || data-desk deps
 
 template.html:
 	data-desk link 2>/dev/null || \
 	gh api repos/data-desk-eco/data-desk/contents/infra/shared-files.sh -H "Accept: application/vnd.github.raw" | sh
 
-build: template.html
+build: deps
 	@echo "{\"date\": \"$$(gh api /repos/:owner/:repo/commits?per_page=1 --jq '.[0].commit.committer.date' 2>/dev/null || git log -1 --format=%cI)\"}" > data/last_updated.json
 	yarn build
 
